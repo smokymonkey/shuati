@@ -42,11 +42,7 @@ public class LC234 {
     }
 
 }
-class ListNode {
-      int val;
-      ListNode next;
-      ListNode(int x) { val = x; }
-}
+
 class HelperClass{
     static ListNode newHead=null;
     public static ListNode reverseList(ListNode head, ListNode stopNode){
