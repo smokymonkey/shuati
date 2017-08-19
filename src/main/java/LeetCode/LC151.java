@@ -14,14 +14,13 @@ public class LC151 {
             while(startIdx<s.length() && s.charAt(startIdx)==' ' )
                 startIdx++;
             endIdx=startIdx;
-            while(endIdx<s.length() && sb.charAt(endIdx)!=' ')
+            while(endIdx<s.length() && s.charAt(endIdx)!=' ')
                 endIdx++;
             if(startIdx<s.length()){
-                StringBuilder tmp = new StringBuilder(s.substring(startIdx,endIdx-startIdx));
-                reverse(tmp);
-                sb.insert(0,tmp.toString());
+                sb.insert(0,s.substring(startIdx,endIdx));
                 sb.insert(0," ");
             }
+            startIdx=endIdx;
 
         }
         sb.delete(0,1);
@@ -39,7 +38,7 @@ public class LC151 {
         }
     }
     public static void main(String[] args){
-        String s=reverseWords(" ");
+        String s=reverseWords(" ab  cd ");
         System.out.println(s);
     }
 }
