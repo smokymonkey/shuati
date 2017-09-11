@@ -1,3 +1,5 @@
+package LeetCode;
+
 import LeetCode.TreeNode;
 
 public class LC156 {
