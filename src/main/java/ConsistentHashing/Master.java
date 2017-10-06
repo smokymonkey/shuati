@@ -10,9 +10,9 @@ import java.util.TreeMap;
 
 public class Master {
     TreeMap<Long,Worker> partition =new TreeMap<>();
-
+    HashFunction hashFunction = Hashing.murmur3_128();
     public void addMachine(Worker worker,int n){
-        HashFunction hashFunction = Hashing.murmur3_128();
+
         for(int i=0;i<n;i++) {
             HashCode hashCode = null;
             try {
@@ -23,6 +23,7 @@ public class Master {
 
 //            Worker next = partition.ceilingEntr();
             partition.put(hashCode.asLong(),worker);
+
         }
 
     }
@@ -31,5 +32,14 @@ public class Master {
     }
     public void addData(String key ,Object data){
 
+    }
+    public long getHash(String  key){
+        HashCode hashCode = null;
+        try {
+            hashCode = hashFunction.hashBytes(key.getBytes("UTF8"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return hashCode.asLong();
     }
 }
