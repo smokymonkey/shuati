@@ -21,7 +21,7 @@ public class Master {
                 e.printStackTrace();
             }
 
-            Worker next = partition.ceilingEntry()
+//            Worker next = partition.ceilingEntr();
             partition.put(hashCode.asLong(),worker);
         }
 
