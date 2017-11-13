@@ -1,32 +1,65 @@
 package LeetCode;
 import java.util.*;
 public class LC336 {
-    public static List<List<Integer>> palindromePairs(String[] words) {
-        TrieNode root = new TrieNode();
-        Map<String,Integer> reverseMap=new HashMap<>();
-        List<List<Integer>> rt =new ArrayList<>();
-        for(int i=0;i<words.length;i++){
-            String reverseWord=new StringBuilder(words[i]).reverse().toString();
-            root.addWord(reverseWord);
-            reverseMap.put(reverseWord,i);
-        }
-        for(int i=0;i<words.length;i++){
-            List<String> tmp = root.withPrefix(words[i]);
-            if(tmp==null || tmp.isEmpty()) continue;
-            for(String postFix :tmp){
-                if(isPalindrome(words[i]+words[reverseMap.get(postFix)]))
-                    rt.add(Arrays.asList(i,reverseMap.get(postFix)));
+    public List<List<Integer>> palindromePairs(String[] words) {
+        List<List<Integer>> rt = new ArrayList<>();
+        for(int i=0;i<words.length-1;i++)
+            for(int j=i+1;j<words.length;j++){
+                int smaller = words[i].length()>words[j].length()?j:i;
+                int bigger = words[i].length()<=words[j].length()?j:i;
+                if(words[smaller].length()==words[bigger].length()) {
+                    if (reverseEqual(words[smaller], words[bigger])) {
+                        rt.add(Arrays.asList(smaller, bigger));
+                        rt.add(Arrays.asList(bigger, smaller));
+                    }
+                }
+                else{
+                    if(isReversePrefix(words[smaller],words[bigger]) && isPalindrome(words[bigger],words[smaller].length(),words[bigger].length()-1))
+                        rt.add(Arrays.asList(bigger,smaller));
+                    if(isReversePostfix(words[smaller],words[bigger]) && isPalindrome(words[bigger],0,words[bigger].length()-1-words[smaller].length()))
+                        rt.add(Arrays.asList(smaller,bigger));
+                }
             }
-        }
         return rt;
     }
-    static boolean isPalindrome(String s ){
-        for(int i=0,j=s.length()-1;i<j;i++,j--)
-            if(s.charAt(i)!=s.charAt(j))
+
+    public boolean reverseEqual(String s1,String s2){
+        if (s1.length()!=s2.length()) return false;
+        int i =0,j=s2.length()-1;
+        while(j>=0){
+            if(s1.charAt(i)!=s2.charAt(j))
                 return false;
+            i++;
+            j--;
+        }
         return true;
     }
+    public boolean isReversePrefix(String smaller, String bigger){
+        for(int i=0;i<smaller.length();i++){
+            if(smaller.charAt(i)!=bigger.charAt(smaller.length()-1-i))
+                return false;
+        }
+        return true;
+
+    }
+    public boolean isReversePostfix(String smaller,String bigger){
+        for(int i=0;i<smaller.length();i++){
+            if(smaller.charAt(i)!=bigger.charAt(bigger.length()-1-i))
+                return false;
+        }
+        return true;
+    }
+    public boolean isPalindrome(String word, int start, int end){
+        while(start<end){
+            if(word.charAt(start)!=word.charAt(end))
+                return false;
+            start++;
+            end--;
+        }
+        return true;
+
+    }
     public static void main(String[] args){
-        palindromePairs(new String[]{"abcd","dcba","lls","s","sssll"});
+        new LC336().palindromePairs(new String[]{"abcd","dcba","lls","s","sssll"});
     }
 }
